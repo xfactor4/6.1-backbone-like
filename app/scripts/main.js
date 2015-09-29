@@ -1,15 +1,24 @@
-var PersonCollection = require('models/person-collection');
+var LikeButton = require('models/like');
+
 
 $(document).ready(function(){
   // prepend the contents of `app/templates/application.hbs` into `body`
   $('#container').append(JST.application());
 
-  var people = new PersonCollection([
-    {name: "Jacob Smith", email: "jake@theironyard.com"},
-    {name: "Mason Stewart"}
-  ]);
+  var likeButton = new LikeButton({
+    likes: 0
+  });
 
-  people.each(function(person){
-    $('.people').append(JST.person(person.toJSON()));
+  $('.like').on('click', function(){
+    likeButton.like();
+  });
+
+  likeButton.on('change:likes', function(){
+    var likes = likeButton.get('likes');
+    if(likeButton.toJSON() === 1){
+      $('.like').text(likes + ' Like');
+    } else {
+      $('.like').text(likes + ' Likes');
+    }
   });
 });
